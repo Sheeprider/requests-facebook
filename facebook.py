@@ -64,8 +64,7 @@ class GraphAPIError(FacebookClientError):
 
 
 class FacebookAPI(object):
-    def __init__(self, client_id=None, client_secret=None, redirect_uri=None,
-                headers=None):
+    def __init__(self, client_id=None, client_secret=None, redirect_uri=None, headers=None):
 
         self.client_id = client_id
         self.client_secret = client_secret
@@ -87,7 +86,7 @@ class FacebookAPI(object):
         return '%s?%s' % (url, urlencode(qs))
 
     def get_access_token(self, code):
-        url = 'https://graph.facebook.com/oauth/access_token'
+        url = 'https://graph.facebook.com/v2.0/oauth/access_token'
         qs = {
             'client_id': self.client_id,
             'client_secret': self.client_secret,
@@ -127,7 +126,7 @@ class FacebookAPI(object):
 
 class GraphAPI(object):
     def __init__(self, access_token=None, headers=None):
-        self.api_url = 'https://graph.facebook.com/'
+        self.api_url = 'https://graph.facebook.com/v2.0/'
         self.access_token = access_token
 
         # If there's headers, set them. If not, lets
@@ -148,7 +147,7 @@ class GraphAPI(object):
         url = self.api_url + endpoint + '?access_token=' + self.access_token
         method = method.lower()
 
-        if not method in ('get', 'post', 'delete'):
+        if method not in ('get', 'post', 'delete'):
             raise FacebookClientError('Method must be of GET, POST or DELETE')
 
         params, files = _split_params_and_files(params)
